@@ -1,5 +1,6 @@
 # Hello there
 #hi there~
+#hey there
 #install package RCurl
 library(RCurl)
 realEstate <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/train.csv"), header=TRUE, sep = ",")
