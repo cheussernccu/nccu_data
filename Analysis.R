@@ -1,11 +1,12 @@
 # Hello there
 #hi there~
-#hey there
+
 #install package RCurl
 library(RCurl)
 realEstate <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/train.csv"), header=TRUE, sep = ",")
 realEstateSum <- summary(realEstate)
-
+library(fBasics)
+basicStats(realEstate)
 attach(realEstate)
 
 #install package olsrr
@@ -15,12 +16,14 @@ for(i in names(realEstate)){
 }
 library(olsrr)
 model <- lm(SalePrice ~ Neighborhood + HouseStyle + YearBuilt + Fireplaces, data = realEstate)
+
 ols_all_subset(model)
 m <- ols_all_subset(model)
 which(m$rsquare == max(m$rsquare))
 
 model2 <- lm(SalePrice ~ MSSubClass +	MSZoning + LotFrontage +	LotArea +	Street  +	LotShape  +	LandContour +	LotConfig +	LandSlope +	Neighborhood +	Condition1 +	Condition2 +	BldgType +	HouseStyle +	OverallQual +	OverallCond +	YearBuilt +	YearRemodAdd +	RoofStyle +	RoofMatl +	Exterior1st +	Exterior2nd +	MasVnrType +	MasVnrArea +	ExterQual +	ExterCond +	Foundation +	BsmtQual +	BsmtCond +	BsmtExposure +	BsmtFinType1 +	BsmtFinSF1 +	BsmtFinType2 +	BsmtFinSF2 +	BsmtUnfSF +	TotalBsmtSF +	Heating +	HeatingQC +	CentralAir +	Electrical +	stFlrSF +	ndFlrSF +	LowQualFinSF +	GrLivArea +	BsmtFullBath +	BsmtHalfBath +	FullBath +	HalfBath +	BedroomAbvGr +	KitchenAbvGr +	KitchenQual +	TotRmsAbvGrd +	Functional +	Fireplaces +	FireplaceQu	+ GarageType	+ GarageYrBlt +	GarageFinish +	GarageCars +	GarageArea +	GarageQual +	GarageCond +	PavedDrive +	WoodDeckSF +	OpenPorchSF +	EnclosedPorch +	SsnPorch +	ScreenPorch +	PoolArea  +	MiscVal +	MoSold +	YrSold +	SaleType +	SaleCondition    	, data = realEstate)
-ols_step_backward(model2)
+ols_best_subset(model2)
+ols_step_forward(model2)
 m <- ols_step_forward(model2)
 
 model3 <- lm(SalePrice ~ OverallQual + GrLivArea + BsmtFinSF1 + RoofMatl, data = realEstate)
@@ -50,4 +53,10 @@ MSSubClass +	MSZoning + LotFrontage +	LotArea +	Street  +	LotShape  +	LandContou
 16    GarageType         0.8694      0.8612     126.2626    14112.1235    34506.5737    
 17    KitchenAbvGr       0.8702      0.8618     124.2399    14110.6322    34436.0698    
 18    SaleType           0.8713      0.8612     120.4988    14119.6136    34508.5784    
-19    Exterior2nd        0.8748      0.8615     103.7160    14130.8911    34467.7425   
+19    Exterior2nd        0.8748      0.8615     103.7160    14130.8911    34467.7425 
+
+
+
+attach(Data_Words_Final)
+model2 <- lm(a ~ .	, data = Data_Words_Final)
+ols_step_forward(model2)
