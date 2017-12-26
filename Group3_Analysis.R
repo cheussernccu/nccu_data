@@ -1,13 +1,13 @@
-# Hello there
-#hi there~
-
 #install package RCurl
 library(RCurl)
-realEstate <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/train.csv"), header=TRUE, sep = ",")
+realEstate <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/train.csv"), header=TRUE, sep = ",", stringsAsFactors = FALSE)
 realEstateSum <- summary(realEstate)
+realEstate.dataframe  = data.frame(realEstate)
 library(fBasics)
-summary(realEstate[which(realEstate$YearBuilt == "2008"),])
+a = summary(realEstate[which(realEstate$YearBuilt == "2008"),])
 realEstateSum
+write.csv(a)
+realEstate
 basicStats(realEstate)
 attach(realEstate)
 
