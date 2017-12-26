@@ -6,6 +6,8 @@ library(RCurl)
 realEstate <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/train.csv"), header=TRUE, sep = ",")
 realEstateSum <- summary(realEstate)
 library(fBasics)
+summary(realEstate[which(realEstate$YearBuilt == "2008"),])
+realEstateSum
 basicStats(realEstate)
 attach(realEstate)
 
