@@ -1,15 +1,36 @@
 #install package RCurl
 library(RCurl)
 realEstate <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/train.csv"), header=TRUE, sep = ",", stringsAsFactors = FALSE)
+realEstate <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/train.csv"), header=TRUE, sep = ",", stringsAsFactors = FALSE)
 realEstateSum <- summary(realEstate)
 realEstate.dataframe  = data.frame(realEstate)
 library(fBasics)
 a = summary(realEstate[which(realEstate$YearBuilt == "2008"),])
+a
 realEstateSum
 write.csv(a)
 realEstate
 basicStats(realEstate)
 attach(realEstate)
+
+
+
+Years=2006:2010
+for(i in Years){
+  print(summary(realEstate[which(realEstate$YrSold==toString(i)),]))
+}
+summary(realEstate)
+
+
+subset = Group9_Data3[which(Group9_Data3==toString(i)),]
+
+
+
+
+
+
+
+
 
 #install package olsrr
 listname = ""
