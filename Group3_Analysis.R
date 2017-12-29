@@ -1,5 +1,6 @@
 #install package RCurl
 library(RCurl)
+options(max.print=1000000)
 realEstate <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/train.csv"), header=TRUE, sep = ",", stringsAsFactors = FALSE)
 realEstate <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/train.csv"), header=TRUE, sep = ",", stringsAsFactors = FALSE)
 realEstateSum <- summary(realEstate)
@@ -21,47 +22,32 @@ for(i in Years){
 }
 summary(realEstate)
 
-
-subset = Group9_Data3[which(Group9_Data3==toString(i)),]
-
-
-
-
-
-
-
-
-
 #install package olsrr
-listname = ""
-for(i in names(realEstate)){
-  listname = c(listname,"+",i)
-}
+
 library(olsrr)
-model <- lm(SalePrice ~ Neighborhood + HouseStyle + YearBuilt + Fireplaces, data = realEstate)
 
-ols_all_subset(model)
-m <- ols_all_subset(model)
-which(m$rsquare == max(m$rsquare))
+model2 <- lm(SalePrice ~ MSSubClass +	MSZoning + LotFrontage +	LotArea +	Street  +	LotShape  +	LandContour +	LotConfig +	LandSlope +	Neighborhood +	Condition1 +	Condition2 +	BldgType +	HouseStyle +	OverallQual +	OverallCond +	YearBuilt +	YearRemodAdd +	RoofStyle +	RoofMatl +	Exterior1st +	Exterior2nd +	MasVnrType +	MasVnrArea +	ExterQual +	ExterCond +	Foundation +	BsmtQual +	BsmtCond +	BsmtExposure +	BsmtFinType1 +	BsmtFinSF1 +	BsmtFinType2 +	BsmtFinSF2 +	BsmtUnfSF +	TotalBsmtSF +	Heating +	HeatingQC +	CentralAir +	Electrical +	stFlrSF +	ndFlrSF +	LowQualFinSF +	GrLivArea +	BsmtFullBath +	BsmtHalfBath +	FullBath +	HalfBath +	BedroomAbvGr +	KitchenAbvGr +	KitchenQual +	TotRmsAbvGrd +	Functional +	Fireplaces +	FireplaceQu	+ GarageType	+ GarageYrBlt +	GarageFinish +	GarageCars +	GarageArea +	GarageQual +	GarageCond +	PavedDrive +	WoodDeckSF +	OpenPorchSF +	EnclosedPorch +	SsnPorch +	ScreenPorch +	PoolArea  +	MiscVal +	MoSold +	YrSold +	SaleType +	SaleCondition    	, data = realEstate.dataframe)
 
-model2 <- lm(SalePrice ~ MSSubClass +	MSZoning + LotFrontage +	LotArea +	Street  +	LotShape  +	LandContour +	LotConfig +	LandSlope +	Neighborhood +	Condition1 +	Condition2 +	BldgType +	HouseStyle +	OverallQual +	OverallCond +	YearBuilt +	YearRemodAdd +	RoofStyle +	RoofMatl +	Exterior1st +	Exterior2nd +	MasVnrType +	MasVnrArea +	ExterQual +	ExterCond +	Foundation +	BsmtQual +	BsmtCond +	BsmtExposure +	BsmtFinType1 +	BsmtFinSF1 +	BsmtFinType2 +	BsmtFinSF2 +	BsmtUnfSF +	TotalBsmtSF +	Heating +	HeatingQC +	CentralAir +	Electrical +	stFlrSF +	ndFlrSF +	LowQualFinSF +	GrLivArea +	BsmtFullBath +	BsmtHalfBath +	FullBath +	HalfBath +	BedroomAbvGr +	KitchenAbvGr +	KitchenQual +	TotRmsAbvGrd +	Functional +	Fireplaces +	FireplaceQu	+ GarageType	+ GarageYrBlt +	GarageFinish +	GarageCars +	GarageArea +	GarageQual +	GarageCond +	PavedDrive +	WoodDeckSF +	OpenPorchSF +	EnclosedPorch +	SsnPorch +	ScreenPorch +	PoolArea  +	MiscVal +	MoSold +	YrSold +	SaleType +	SaleCondition    	, data = realEstate)
-ols_best_subset(model2)
-ols_step_forward(model2)
 m <- ols_step_forward(model2)
+m
 
-model3 <- lm(SalePrice ~ OverallQual + GrLivArea + BsmtFinSF1 + RoofMatl, data = realEstate)
-ols_all_subset(model3)
-which(m$rsquare == max(m$rsquare))
-
+library(readr)
+train_casparTest <- read_delim("~/nccu/train_casparTest.csv", 
+                               ";", escape_double = FALSE, trim_ws = TRUE)
 library(DAAG)
-fit.a = lm(SalePrice ~ OverallQual + GrLivArea + BsmtFinSF1 + ExterQual,data=realEstate.dataframe)
-cv.lm(data=realEstate.dataframe, fit.a, m=5)
-
-library(leaps)
-leaps<-regsubsets(SalePrice ~ MSSubClass +	MSZoning + LotFrontage +	LotArea +	Street  +	LotShape  +	LandContour +	LotConfig +	LandSlope +	Neighborhood +	Condition1 +	Condition2 +	BldgType +	HouseStyle +	OverallQual +	OverallCond +	YearBuilt +	YearRemodAdd +	RoofStyle +	RoofMatl +	Exterior1st +	Exterior2nd +	MasVnrType +	MasVnrArea +	ExterQual +	ExterCond +	Foundation +	BsmtQual +	BsmtCond +	BsmtExposure +	BsmtFinType1 +	BsmtFinSF1 +	BsmtFinType2 +	BsmtFinSF2 +	BsmtUnfSF +	TotalBsmtSF +	Heating +	HeatingQC +	CentralAir +	Electrical +	stFlrSF +	ndFlrSF +	LowQualFinSF +	GrLivArea +	BsmtFullBath +	BsmtHalfBath +	FullBath +	HalfBath +	BedroomAbvGr +	KitchenAbvGr +	KitchenQual +	TotRmsAbvGrd +	Functional +	Fireplaces +	FireplaceQu	+ GarageType	+ GarageYrBlt +	GarageFinish +	GarageCars +	GarageArea +	GarageQual +	GarageCond +	PavedDrive +	WoodDeckSF +	OpenPorchSF +	EnclosedPorch +	SsnPorch +	ScreenPorch +	PoolArea  +	MiscVal +	MoSold +	YrSold +	SaleType +	SaleCondition    	,data=realEstate.dataframe,nbest=10, really.big = )
-
-
-
+fit.a = lm(SalePrice ~ 0+OverallQual + GrLivArea + BsmtFinSF1 +  extDummy +roofDummy,data=train_casparTest)
+fit.b = lm(SalePrice ~ 0+OverallQual + GrLivArea + BsmtFinSF1 +  ExterQual +RoofMatl,data=realEstate.dataframe)
+fit.c = lm(SalePrice ~ 0+OverallQual + GrLivArea + BsmtFinSF1 +  ExterQual +TotalBsmtSF        ,data=realEstate.dataframe)
+fit.d = lm(SalePrice ~ 0+OverallQual + GrLivArea + BsmtFinSF1 +  extDummy +TotalBsmtSF        ,data=train_casparTest)
+fit.e = lm(SalePrice ~ 0+MSSubClass +	MSZoning + LotFrontage +	LotArea +	Street  +	LotShape  +	LandContour +	LotConfig +	LandSlope +	Neighborhood +	Condition1 +	Condition2 +	BldgType +	HouseStyle +	OverallQual +	OverallCond +	YearBuilt +	YearRemodAdd +	RoofStyle +	RoofMatl +	Exterior1st +	Exterior2nd +	MasVnrType +	MasVnrArea +	ExterQual +	ExterCond +	Foundation +	BsmtQual +	BsmtCond +	BsmtExposure +	BsmtFinType1 +	BsmtFinSF1 +	BsmtFinType2 +	BsmtFinSF2 +	BsmtUnfSF +	TotalBsmtSF +	Heating +	HeatingQC +	CentralAir +	Electrical +	stFlrSF +	ndFlrSF +	LowQualFinSF +	GrLivArea +	BsmtFullBath +	BsmtHalfBath +	FullBath +	HalfBath +	BedroomAbvGr +	KitchenAbvGr +	KitchenQual +	TotRmsAbvGrd +	Functional +	Fireplaces +	FireplaceQu	+ GarageType	+ GarageYrBlt +	GarageFinish +	GarageCars +	GarageArea +	GarageQual +	GarageCond +	PavedDrive +	WoodDeckSF +	OpenPorchSF +	EnclosedPorch +	SsnPorch +	ScreenPorch +	PoolArea  +	MiscVal +	MoSold +	YrSold +	SaleType +	SaleCondition    	, data = realEstate.dataframe)
+#0+  because b0 shouldnt be negative
+summary(fit.d)
+cv.lm(data=train_casparTest, fit.a, m=5)
+cv.lm(data=realEstate.dataframe, fit.b, m=5)
+cv.lm(data=realEstate.dataframe, fit.c, m=5)
+cv.lm(data=train_casparTest, fit.d, m=5) #beste
+cv.lm(data=realEstate.dataframe, model2, m=5)
+lm(SalePrice ~ OverallQual + GrLivArea + BsmtFinSF1 +  ExterQual +RoofMatl,data=realEstate.dataframe)
 
 #
 
@@ -71,6 +57,34 @@ leaps<-regsubsets(SalePrice ~ MSSubClass +	MSZoning + LotFrontage +	LotArea +	St
 
 
 
+
+
+
+
+
+#library(leaps)
+#leaps<-regsubsets(SalePrice ~ MSSubClass +	MSZoning + LotFrontage +	LotArea +	Street  +	LotShape  +	LandContour +	LotConfig +	LandSlope +	Neighborhood +	Condition1 +	Condition2 +	BldgType +	HouseStyle +	OverallQual +	OverallCond +	YearBuilt +	YearRemodAdd +	RoofStyle +	RoofMatl +	Exterior1st +	Exterior2nd +	MasVnrType +	MasVnrArea +	ExterQual +	ExterCond +	Foundation +	BsmtQual +	BsmtCond +	BsmtExposure +	BsmtFinType1 +	BsmtFinSF1 +	BsmtFinType2 +	BsmtFinSF2 +	BsmtUnfSF +	TotalBsmtSF +	Heating +	HeatingQC +	CentralAir +	Electrical +	stFlrSF +	ndFlrSF +	LowQualFinSF +	GrLivArea +	BsmtFullBath +	BsmtHalfBath +	FullBath +	HalfBath +	BedroomAbvGr +	KitchenAbvGr +	KitchenQual +	TotRmsAbvGrd +	Functional +	Fireplaces +	FireplaceQu	+ GarageType	+ GarageYrBlt +	GarageFinish +	GarageCars +	GarageArea +	GarageQual +	GarageCond +	PavedDrive +	WoodDeckSF +	OpenPorchSF +	EnclosedPorch +	SsnPorch +	ScreenPorch +	PoolArea  +	MiscVal +	MoSold +	YrSold +	SaleType +	SaleCondition    	,data=realEstate.dataframe,nbest=10, really.big = TRUE)
+#library(MASS)
+#fit <- lm(SalePrice ~ MSZoning + LotFrontage +	LotArea +	Street  +	LotShape  +	LandContour +	LotConfig +	LandSlope +	Neighborhood +	Condition1 +	Condition2 +	BldgType +	HouseStyle +	OverallQual +	OverallCond +	YearBuilt +	YearRemodAdd +	RoofStyle +	RoofMatl +	Exterior1st +	Exterior2nd +	MasVnrType +	MasVnrArea +	ExterQual +	ExterCond +	Foundation +	BsmtQual +	BsmtCond +	BsmtExposure +	BsmtFinType1 +	BsmtFinSF1 +	BsmtFinType2 +	BsmtFinSF2 +	BsmtUnfSF +	TotalBsmtSF +	Heating +	HeatingQC +	CentralAir +	Electrical  +	LowQualFinSF +	GrLivArea +	BsmtFullBath +	BsmtHalfBath +	FullBath +	HalfBath +	BedroomAbvGr +	KitchenAbvGr +	KitchenQual +	TotRmsAbvGrd +	Functional +	Fireplaces	+ GarageType	+ GarageYrBlt +	GarageFinish +	GarageCars +	GarageArea +	GarageQual +	GarageCond +	PavedDrive +	WoodDeckSF +	OpenPorchSF +	EnclosedPorch +	ScreenPorch  +	MoSold +	YrSold +	SaleType +	SaleCondition    ,data=train_casparTest)
+#step <- stepAIC(fit, direction="both")
+#step # display results 
+
+
+
+
+
+
+
+
+
+#model3 <- lm(SalePrice ~ OverallQual + GrLivArea + BsmtFinSF1 + RoofMatl, data = realEstate)
+#ols_all_subset(model3)
+#which(m$rsquare == max(m$rsquare))
+#model <- lm(SalePrice ~ Neighborhood + HouseStyle + YearBuilt + Fireplaces, data = realEstate)
+
+#ols_all_subset(model)
+#m <- ols_all_subset(model)
+#which(m$rsquare == max(m$rsquare))
 
 
 
