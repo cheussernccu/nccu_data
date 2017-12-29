@@ -8,6 +8,7 @@ summary(realEstate)
 
 #HousePriceIndex from the US for 2006-2010
 HPI <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/HousePriceIndex.csv"), header=TRUE, sep = ",", stringsAsFactors = FALSE)
+HPI = head(HPI,-5)
 
 #Changing the values so that January 2006 equals 100 (Indexing to base January 2006)
 HPI_ind=HPI$USA.House.Price.Index/HPI[1,4]*100
@@ -29,6 +30,8 @@ for (year in (2006:2010)){
   }
 }
 
+avgprices=head(avgprices,-5)
+
 #Indexing our dataset to January2006
 IndexIowa=avgprices/avgjan06*100
 
@@ -36,6 +39,16 @@ my
 
 #Plotting the values
 x11()
-plot(1:60,IndexIowa,type="l",col="red",ylim=c(0,120),xlim=c(1,60),ylab="Index",xlab="Year/Month")
-lines(1:60,HPI_ind,type="l",col="blue")
-lines(c(-10,100),c(100,100))
+plot(1:55,IndexIowa,type="l",col="red",ylim=c(0,120),xlim=c(1,55),ylab="Index",xlab="Year/Month",xaxt="n")
+axis(1,at=seq(0,60,6))
+legend(1,40,legend=c("American house price index", "Iowa house prices (our dataset)"),col=c("blue","red"),lty=1)
+lines(1:55,HPI_ind,type="l",col="blue")
+lines(c(-10,100),c(100,100),lty=2)
+
+
+#Korrelation berechnen
+#x-Achse andere Beschriftungen -> Januar 2006 etc
+cor(1:55,HPI_ind)
+cor(1:55,IndexIowa)
+cor(HPI_ind,IndexIowa)
+IndexIowa
