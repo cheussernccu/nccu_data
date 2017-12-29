@@ -51,4 +51,4 @@ lines(c(-10,100),c(100,100),lty=2)
 cor(1:55,HPI_ind)
 cor(1:55,IndexIowa)
 cor(HPI_ind,IndexIowa)
-IndexIowa
+cor.test(HPI_ind,IndexIowa)
