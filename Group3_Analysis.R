@@ -29,9 +29,9 @@ m <- ols_step_forward(model)
 
 #bestSubset variable selection - probably takes several hours to run - not completed yet
 #includes all variales that shown a less or euqal 5% significant in a lm with all variables
-fit.bestSub = lm(SalePrice ~ 0+OverallQual +	OverallCond +	RoofMatl +	roofDummy	+ MasVnrArea +	ExterQual +	extDummy +	BsmtExposure +	BsmtFinSF1 +	stFlrSF +	ndFlrSF +	KitchenQual+	LotArea +	Condition2 +	Neighborhood        ,data=train_casparTest_Kopie)
+fit.bestSub = lm(SalePrice ~ 0+OverallQual +	OverallCond  +	roofDummy	+ MasVnrArea  +	extDummy +	BsmtExposure +	BsmtFinSF1 +	stFlrSF +	ndFlrSF +	KitchenQual+	LotArea +	Condition2 +	Neighborhood        ,data=train_casparTest_Kopie)
 m2 <- ols_best_subset(fit.bestSub)
-
+m2
 #test of different models
 fit.a = lm(SalePrice ~ 0+OverallQual + GrLivArea + BsmtFinSF1 +  extDummy +roofDummy,data=train_withDummy)
 summary(fit.a)
