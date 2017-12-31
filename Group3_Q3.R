@@ -1,16 +1,19 @@
 library(RCurl)
 realEstate <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/train.csv"), header=TRUE, sep = ",", stringsAsFactors = FALSE)
 
+#regression by year
+ylm=lm(SalePrice~as.factor(YrSold),data=realEstate)
+summary(ylm)
 
-lm(SalePrice~as.factor(YrSold),data=realEstate)
-summary(realEstate)
-
-####not working at the moment
+#regression by cummulative month
 cmsold=c()
-for(s in realEstate){
-  cmsold=c(cmsold+((realEstate$YrSold[s]-2006)*12+realEstate$MoSold[s]))
+for(s in 1:1460){
+  sms=((realEstate$YrSold[s]-2006)*12+realEstate$MoSold[s])
+  cmsold=c(cmsold,sms)
 }
-cmsold
+
+mlm=lm(realEstate$SalePrice~cmsold)
+summary(mlm)
 
 
 #HousePriceIndex from the US for 2006-2010
@@ -44,7 +47,7 @@ IndexIowa=avgprices/avgjan06*100
 
 my
 Time=(1:55)
-Time
+cbind(my,Time)
 
 #Plotting the values
 x11()
@@ -57,8 +60,7 @@ lines(c(-10,100),c(100,100),lty=2)
 
 #Korrelation berechnen
 #x-Achse andere Beschriftungen -> Januar 2006 etc
-cor(Time,HPI_ind)
-cor(Time,IndexIowa)
-cor(HPI_ind,IndexIowa)
+cor.test(Time,HPI_ind)
+cor.test(Time,IndexIowa)
 cor.test(HPI_ind,IndexIowa)
 pairs(cbind(HPI_ind,IndexIowa,Time))
