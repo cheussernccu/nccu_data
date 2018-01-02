@@ -11,9 +11,9 @@ for(i in Years){
 
 #Overview of Data
 data1 = read.csv("C:/Users/User/Desktop/Population-data_BackUp.csv")
-
-plot(data1[,1],data1[,2],type="l",xlab="Year",ylab="Population",main="Population")
-plot(data1[,1],data1[,3],type="l",xlab="Year",ylab="Household",main="Average Households of Each Year")
+#Population data
+plot(data1[,1],data1[,2],type="l",xlab="Year",ylab="Population",main="Total Population in New Hampshire")
+plot(data1[11:56,1],data1[11:56,3],type="l",xlab="Year",ylab="Household",main="Average Households of Each Year in New Hampshire")
 plot(data1[,1],data1[,4],type="l",xlab="Year",ylab="Fertility Rate",main="Fertility Rate")
 plot(data1[,1],data1[,5],type="l",xlab="Year",ylab="Birth Rate",main="Birth Rate")
 plot(data1[,1],data1[,6],type="l",xlab="Year",ylab="Death Rate",main="Death Rate")
@@ -34,24 +34,25 @@ for(i in 1:5){
   overview_Pop[4,i]=sd(data1[,i+1],na.rm = TRUE)
 }
 
-
+#house data
+#House Type
 housetype=cbind(data1[,7],1-data1[,7])
 x11(width=8,height=5)
 barplot(t(housetype),names.arg  = c(1960:2015),main ="Rate of House Type", xlab="Year",ylab="Rate",ylim = c(0,1),legend.text =  c("Condo","Single"),col = c("lightblue","lightpink"),args.legend = list(x = "topright",cex=1,bg="white"))
-
+#Rooms
 x11(width=8,height=5)
 plot(data1[1:56,1],data1[1:56,10],type="l",col="black",xlab="Year",ylab="Rooms",main="Average Rooms of Each Year",ylim=c(0,10),lwd=2)
 lines(data1[1:56,1],data1[1:56,8],col="red",lwd=2)
 lines(data1[1:56,1],data1[1:56,9],col="blue",lwd=2)
 legend("topright", c("Total","Bedrooms","Bathrooms"), ncol = 1, cex = 1,col=c("black","red","blue"),
        lty=c(1,1,1),lwd=c(2,2,2))
-
+#size
 x11(width=8,height=5)
-plot(data1[1:56,1],data1[1:56,12]*375.965264,type="l",col="black",xlab="Year",ylab="Size",main="Average Rooms of Each Year",lwd=2)
+plot(data1[1:56,1],data1[1:56,12]*375.965264,type="l",col="black",xlab="Year",ylab="Size",main="Average Sizes of Each Year",lwd=2)
 lines(data1[1:56,1],data1[1:56,11],col="red",lwd=2)
 legend("topright", c("Total","Indoor"), ncol = 1, cex = 1,col=c("black","red"),
        lty=c(1,1),lwd=c(2,2))
-
+#total houses
 plot(data1[,1],data1[,13],type="l",xlab="Year",ylab="Houses",main="Total Houses")
 
 overview_house=matrix(NA,ncol =7,nrow = 4 )
