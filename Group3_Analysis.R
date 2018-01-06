@@ -12,15 +12,15 @@ realEstate <-read.csv(text=getURL("https://raw.githubusercontent.com/cheusserncc
 realEstate.dataframe  = data.frame(realEstate)
 
 #Dataset with additional Dummy Variables for other models and less variables
-train_withDummy <- read_delim("~/nccu/train_dummy_2.csv", 
-                              ";", escape_double = FALSE, trim_ws = TRUE)
-#Dataset with less columns for the faster execution of some algorithms
-train_lessColumns <- read_delim("~/nccu/train_clean.csv", 
-                                ";", escape_double = FALSE, trim_ws = TRUE)
-#train_withDummy <- read_delim("~/nccu_data/train_dummy.csv", 
+#train_withDummy <- read_delim("~/nccu/train_dummy_2.csv", 
 #                              ";", escape_double = FALSE, trim_ws = TRUE)
-#train_lessColumns <- read_delim("~/nccu_data/train_clean.csv", 
+#Dataset with less columns for the faster execution of some algorithms
+#train_lessColumns <- read_delim("~/nccu/train_clean.csv", 
 #                                ";", escape_double = FALSE, trim_ws = TRUE)
+train_withDummy <- read_delim("~/nccu_data/train_dummy_2.csv", 
+                           ";", escape_double = FALSE, trim_ws = TRUE)
+train_lessColumns <- read_delim("~/nccu_data/train_clean.csv", 
+                             ";", escape_double = FALSE, trim_ws = TRUE)
 
 #BasicSummary Data about the all realEstate sold in one year
 Years=2006:2010
