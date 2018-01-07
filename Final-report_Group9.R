@@ -3,7 +3,6 @@
 
 #Packages
 library(RCurl)
-library(fBasics)
 
 #Data set
 realEstate <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/Group9%20Data3.csv"), header=TRUE, sep = ",", stringsAsFactors = FALSE)
