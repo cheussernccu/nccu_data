@@ -17,7 +17,11 @@ realEstate[which(realEstate$Property.Type == "Single Family"),5] = 0
 
 #Overview of Data
 #data1 = read.csv("C:/Users/User/Desktop/Population-data_BackUp.csv")
+
 data1 <- read.csv("Population-data_BackUp (1).csv", header=TRUE, sep = ";")
+for(i in (1960:2010)){
+  data1[which(data1$Year == i),14] = data1[which(data1$Year == i+5),13]
+}
 #demographic data
 x11(width=10,height=8)
 par(mar=c(3,4,3,2))
@@ -356,8 +360,9 @@ fit=lm(SizeTotal~Death)
 summary(fit)
 
 #question5
-results=read.table("D:/R運算(學校)/Question 5 data.csv",sep = ",",header = TRUE)
-attach(results)
+#results=read.table("D:/R運算(學校)/Question 5 data.csv",sep = ",",header = TRUE)
+#attach(results)
+attach(data1)
 fit.5=lm(HousesTotal~PopTotal+Avhousehold)
 summary(fit.5)
 
