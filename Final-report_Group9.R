@@ -3,6 +3,7 @@
 
 #Packages
 library(RCurl)
+library(olsrr)
 
 #Data set
 realEstate <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/Group9%20Data3.csv"), header=TRUE, sep = ",", stringsAsFactors = FALSE)
@@ -113,7 +114,10 @@ for(i in 1:5){
 attach(data1)
 
 #Question 1
-fit.1=lm(SingleCondo~PopTotal+Death) 
+fit.test=lm(SingleCondo~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
+m2 <- ols_best_subset(fit.test)
+m2
+fit.1=lm(SingleCondo~PopTotal+Fertility+Death) 
 summary(fit.1)
 library(DAAG)
 cv.lm(data = data1, fit.1, m=5)
@@ -181,75 +185,33 @@ fit=lm(SingleCondo~Death)
 summary(fit)
 
 #Question 2
-fit.2=lm(TotalRooms~Avhousehold+Death, data = data1)
-summary(fit.2)
-library(olsrr)
+fit.test=lm(TotalRooms~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
 m2 <- ols_best_subset(fit.test)
 m2
-fit.test=lm(TotalRooms~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
-summary(fit.test)
-fit=lm(TotalRooms~PopTotal+Avhousehold+Birth+Death)
-summary(fit)
-fit=lm(TotalRooms~PopTotal+Avhousehold+Fertility+Birth)
-summary(fit)
-fit=lm(TotalRooms~PopTotal+Avhousehold+Fertility+Death)
-summary(fit)
-fit=lm(TotalRooms~PopTotal+Fertility+Birth+Death)
-summary(fit)
-fit=lm(TotalRooms~Avhousehold+Fertility+Birth+Death)
-summary(fit)
-fit=lm(TotalRooms~PopTotal+Avhousehold+Fertility)
-summary(fit)
-fit=lm(TotalRooms~PopTotal+Avhousehold+Birth)
-summary(fit)
-fit=lm(TotalRooms~PopTotal+Avhousehold+Death)
-summary(fit)
-fit=lm(TotalRooms~Avhousehold+Fertility+Birth)
-summary(fit)
-fit=lm(TotalRooms~Avhousehold+Fertility+Death)
-summary(fit)
-fit=lm(TotalRooms~Avhousehold+Birth+Death)
-summary(fit)
-fit=lm(TotalRooms~Fertility+Birth+Death)
-summary(fit)
-fit=lm(TotalRooms~PopTotal+Fertility+Birth)
-summary(fit)
-fit=lm(TotalRooms~PopTotal+Fertility+Death)
-summary(fit)
-fit=lm(TotalRooms~PopTotal+Birth+Death)
-summary(fit)
-fit=lm(TotalRooms~PopTotal+Avhousehold)
-summary(fit)
-fit=lm(TotalRooms~PopTotal+Fertility)
-summary(fit)
-fit=lm(TotalRooms~Avhousehold+Fertility)
-summary(fit)
-fit=lm(TotalRooms~PopTotal+Birth)
-summary(fit)
-fit=lm(TotalRooms~PopTotal+Death)
-summary(fit)
-fit=lm(TotalRooms~Avhousehold+Birth)
-summary(fit)
-fit=lm(TotalRooms~Avhousehold+Death)
-summary(fit)
-fit=lm(TotalRooms~Fertility+Birth)
-summary(fit)
-fit=lm(TotalRooms~Fertility+Death)
-summary(fit)
-fit=lm(TotalRooms~Birth+Death)
-summary(fit)
-fit=lm(TotalRooms~PopTotal)
-summary(fit)
-fit=lm(TotalRooms~Avhousehold)
-summary(fit)
-fit=lm(TotalRooms~Fertility)
-summary(fit)
-fit=lm(TotalRooms~Birth)
-summary(fit)
-fit=lm(TotalRooms~Death)
-summary(fit)
+fit.2a=lm(TotalRooms~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
+summary(fit.2a)
+
+fit.test=lm(Bedrooms~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
+m2 <- ols_best_subset(fit.test)
+m2
+fit.2b=lm(Bedrooms~Avhousehold+Death, data = data1)
+summary(fit.2b)
+
+fit.test=lm(Bathrooms~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
+m2 <- ols_best_subset(fit.test)
+m2
+fit.2c=lm(Bathrooms~PopTotal+Fertility+Death, data = data1)
+summary(fit.2c)
+
 
 #Question 3
+fit.test=lm(SizeIndoor~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
+m2 <- ols_best_subset(fit.test)
+m2
+fit.3=lm(SizeIndoor~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
+summary(fit.3)
+
+
 fit.3=lm(SizeIndoor~PopTotal+Fertility+Birth+Death)
 summary(fit.3)
 
@@ -317,8 +279,13 @@ fit=lm(SizeIndoor~Death)
 summary(fit)
 
 #Question 4
-fit.4=lm(SizeTotal~PopTotal)
-summary(fit.4)
+fit.test=lm(SizeTotal~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
+m2 <- ols_best_subset(fit.test)
+m2
+
+
+#fit.4=lm(SizeTotal~PopTotal)
+#summary(fit.4)
 
 fit=lm(SizeTotal~PopTotal+Avhousehold+Fertility+Birth+Death)
 summary(fit)
@@ -384,10 +351,10 @@ fit=lm(SizeTotal~Death)
 summary(fit)
 
 #Question 5
-#results=read.table("D:/R運算(學校)/Question 5 data.csv",sep = ",",header = TRUE)
-#attach(results)
-attach(data1)
-fit.5=lm(HousesTotal~PopTotal+Avhousehold)
+fit.test=lm(HousesTotal~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
+m2 <- ols_best_subset(fit.test)
+m2
+fit.5=lm(HousesTotal~PopTotal+Fertility+Birth)
 summary(fit.5)
 
 fit=lm(HousesTotal~PopTotal+Avhousehold+Fertility+Birth+Death)
