@@ -119,7 +119,6 @@ library(DAAG)
 cv.lm(data = data1, fit.1, m=5)
 fit=lm(SingleCondo~PopTotal+Avhousehold+Fertility+Birth+Death)
 summary(fit)
-
 fit=lm(SingleCondo~PopTotal+Avhousehold+Birth+Death)
 summary(fit)
 fit=lm(SingleCondo~PopTotal+Avhousehold+Fertility+Birth)
