@@ -6,7 +6,7 @@ library(RCurl)
 library(olsrr)
 
 #Data set
-realEstate <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/Group9%20Data3.csv"), header=TRUE, sep = ",", stringsAsFactors = FALSE)
+realEstate <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/Real%20Estate_Group9.csv"), header=TRUE, sep = ",", stringsAsFactors = FALSE)
 realEstate.dataframe = data.frame(realEstate)
 
 #Adjusting the Data (categorial to numerical)
@@ -20,9 +20,9 @@ for(i in Years){
 }
 
 #Create a new dummyvariable for research question 5
-data1 <- read.csv("Population-data_BackUp (1).csv", header=TRUE, sep = ";")
+R_Population <- read.csv("Population _Group9.csv", header=TRUE, sep = ";")
 for(i in (1960:2010)){
-  data1[which(data1$Year == i),14] = data1[which(data1$Year == i+5),13]
+  R_Population[which(R_Population$Year == i),14] = R_Population[which(R_Population$Year == i+5),13]
 }
 
 
@@ -34,40 +34,40 @@ par(mar=c(3,4,2,2))
 par(mfrow=c(2,2))
 
 #House Type
-housetype=cbind(data1[,7],1-data1[,7])
+housetype=cbind(R_Population[,7],1-R_Population[,7])
 barplot(t(housetype),names.arg  = c(1960:2015),main ="Rate of House Type in New Hampshire", xlab="Year",ylab="Rate",ylim = c(0,1),legend.text =  c("Condo","Single"),col = c("lightblue","lightpink"),args.legend = list(x = "topright",cex=1,bg="white"))
 
 #Rooms
-plot(data1[1:56,1],data1[1:56,10],type="l",col="black",xlab="Year",ylab="Rooms",main="Average Rooms in New Hampshire",ylim=c(0,12),lwd=2)
-lines(data1[1:56,1],data1[1:56,8],col="red",lwd=2)
-lines(data1[1:56,1],data1[1:56,9],col="blue",lwd=2)
+plot(R_Population[1:56,1],R_Population[1:56,10],type="l",col="black",xlab="Year",ylab="Rooms",main="Average Rooms in New Hampshire",ylim=c(0,12),lwd=2)
+lines(R_Population[1:56,1],R_Population[1:56,8],col="red",lwd=2)
+lines(R_Population[1:56,1],R_Population[1:56,9],col="blue",lwd=2)
 legend("topright", c("Total","Bedrooms","Bathrooms"), ncol = 1, cex = 1,col=c("black","red","blue"),
        lty=c(1,1,1),lwd=c(2,2,2))
 
 #Size
-plot(data1[1:56,1],data1[1:56,12]*375.965264,type="l",col="black",xlab="Year",ylab="Size",main="Average Sizes in New Hampshire",lwd=2,ylim=c(0,13000))
-lines(data1[1:56,1],data1[1:56,11],col="red",lwd=2)
+plot(R_Population[1:56,1],R_Population[1:56,12]*375.965264,type="l",col="black",xlab="Year",ylab="Size",main="Average Sizes in New Hampshire",lwd=2,ylim=c(0,13000))
+lines(R_Population[1:56,1],R_Population[1:56,11],col="red",lwd=2)
 legend("topright", c("Total","Indoor"), ncol = 1, cex = 1,col=c("black","red"),
        lty=c(1,1),lwd=c(2,2))
 
 #Total houses
-plot(data1[,1],data1[,13],type="l",xlab="Year",ylab="Houses",main="Total Houses in New Hampshire")
+plot(R_Population[,1],R_Population[,13],type="l",xlab="Year",ylab="Houses",main="Total Houses in New Hampshire")
 
 #Descriptive statistics 
 overview_house=matrix(NA,ncol =7,nrow = 4 )
 colnames(overview_house)=c("Rate of Condo","Bedrooms","Bathrooms","Total rooms","Indoor size(square feets)","Total size(Acres)","Total Houses")
 rownames(overview_house)=c("mean","maximun","minimun","standard_deviation")
 for(i in 1:7){
-  overview_house[1,i]=mean(data1[,i+6],na.rm = TRUE)
+  overview_house[1,i]=mean(R_Population[,i+6],na.rm = TRUE)
 }
 for(i in 1:7){
-  overview_house[2,i]=max(data1[,i+6],na.rm = TRUE)
+  overview_house[2,i]=max(R_Population[,i+6],na.rm = TRUE)
 }
 for(i in 1:7){
-  overview_house[3,i]=min(data1[,i+6],na.rm = TRUE)
+  overview_house[3,i]=min(R_Population[,i+6],na.rm = TRUE)
 }
 for(i in 1:7){
-  overview_house[4,i]=sd(data1[,i+6],na.rm = TRUE)
+  overview_house[4,i]=sd(R_Population[,i+6],na.rm = TRUE)
 }
 
 
@@ -77,19 +77,19 @@ par(mar=c(3,4,3,2))
 par(mfrow=c(3,2))
 
 #Population
-plot(data1[,1],data1[,2],type="l",xlab="Year",ylab="Population",main="Total Population in New Hampshire")
+plot(R_Population[,1],R_Population[,2],type="l",xlab="Year",ylab="Population",main="Total Population in New Hampshire")
 
 #Average size of a household
-plot(data1[11:56,1],data1[11:56,3],type="l",xlab="Year",ylab="Household",main="Average Households in United States")
+plot(R_Population[11:56,1],R_Population[11:56,3],type="l",xlab="Year",ylab="Household",main="Average Households in United States")
 
 #Fertility rate
-plot(data1[,1],data1[,4],type="l",xlab="Year",ylab="Fertility Rate",main="Fertility Rate in United States")
+plot(R_Population[,1],R_Population[,4],type="l",xlab="Year",ylab="Fertility Rate",main="Fertility Rate in United States")
 
 #Birth rate
-plot(data1[,1],data1[,5],type="l",xlab="Year",ylab="Birth Rate",main="Birth Rate in United States")
+plot(R_Population[,1],R_Population[,5],type="l",xlab="Year",ylab="Birth Rate",main="Birth Rate in United States")
 
 #Death rate
-plot(data1[,1],data1[,6],type="l",xlab="Year",ylab="Death Rate",main="Death Rate in United States")
+plot(R_Population[,1],R_Population[,6],type="l",xlab="Year",ylab="Death Rate",main="Death Rate in United States")
 
 
 #Descriptive statistics 
@@ -97,30 +97,32 @@ overview_Pop=matrix(NA,ncol =5,nrow = 4 )
 colnames(overview_Pop)=c("Population","Average Households","Fertility Rate","Birth Rate","Death Rate")
 rownames(overview_Pop)=c("mean","maximun","minimun","standard_deviation")
 for(i in 1:5){
-  overview_Pop[1,i]=mean(data1[,i+1],na.rm = TRUE)
+  overview_Pop[1,i]=mean(R_Population[,i+1],na.rm = TRUE)
 }
 for(i in 1:5){
-  overview_Pop[2,i]=max(data1[,i+1],na.rm = TRUE)
+  overview_Pop[2,i]=max(R_Population[,i+1],na.rm = TRUE)
 }
 for(i in 1:5){
-  overview_Pop[3,i]=min(data1[,i+1],na.rm = TRUE)
+  overview_Pop[3,i]=min(R_Population[,i+1],na.rm = TRUE)
 }
 for(i in 1:5){
-  overview_Pop[4,i]=sd(data1[,i+1],na.rm = TRUE)
+  overview_Pop[4,i]=sd(R_Population[,i+1],na.rm = TRUE)
 }
 
 
 #Regression
-attach(data1)
+attach(R_Population)
 
 #Question 1
-fit.test=lm(SingleCondo~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
+fit.test=lm(SingleCondo~PopTotal+Avhousehold+Fertility+Birth+Death, data = R_Population)
 m2 <- ols_best_subset(fit.test)
 m2
 fit.1=lm(SingleCondo~PopTotal+Fertility+Death) 
 summary(fit.1)
-library(DAAG)
-cv.lm(data = data1, fit.1, m=5)
+
+#library(DAAG)
+#cv.lm(data = R_Population, fit.1, m=5)
+
 fit=lm(SingleCondo~PopTotal+Avhousehold+Fertility+Birth+Death)
 summary(fit)
 fit=lm(SingleCondo~PopTotal+Avhousehold+Birth+Death)
@@ -185,239 +187,44 @@ fit=lm(SingleCondo~Death)
 summary(fit)
 
 #Question 2
-fit.test=lm(TotalRooms~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
+fit.test=lm(TotalRooms~PopTotal+Avhousehold+Fertility+Birth+Death, data = R_Population)
 m2 <- ols_best_subset(fit.test)
 m2
-fit.2a=lm(TotalRooms~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
+fit.2a=lm(TotalRooms~PopTotal+Avhousehold+Fertility+Birth+Death, data = R_Population)
 summary(fit.2a)
 
-fit.test=lm(Bedrooms~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
+fit.test=lm(Bedrooms~PopTotal+Avhousehold+Fertility+Birth+Death, data = R_Population)
 m2 <- ols_best_subset(fit.test)
 m2
-fit.2b=lm(Bedrooms~Avhousehold+Death, data = data1)
+fit.2b=lm(Bedrooms~Avhousehold+Death, data = R_Population)
 summary(fit.2b)
 
-fit.test=lm(Bathrooms~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
+fit.test=lm(Bathrooms~PopTotal+Avhousehold+Fertility+Birth+Death, data = R_Population)
 m2 <- ols_best_subset(fit.test)
 m2
-fit.2c=lm(Bathrooms~PopTotal+Fertility+Death, data = data1)
+fit.2c=lm(Bathrooms~PopTotal+Fertility+Death, data = R_Population)
 summary(fit.2c)
 
 
 #Question 3
-fit.test=lm(SizeIndoor~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
+fit.test=lm(SizeIndoor~PopTotal+Avhousehold+Fertility+Birth+Death, data = R_Population)
 m2 <- ols_best_subset(fit.test)
 m2
-fit.3=lm(SizeIndoor~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
+fit.3=lm(SizeIndoor~PopTotal+Avhousehold+Fertility+Birth+Death, data = R_Population)
 summary(fit.3)
 
-
-fit.3=lm(SizeIndoor~PopTotal+Fertility+Birth+Death)
-summary(fit.3)
-
-fit=lm(SizeIndoor~PopTotal+Avhousehold+Fertility+Birth+Death)
-summary(fit)
-fit=lm(SizeIndoor~PopTotal+Avhousehold+Birth+Death)
-summary(fit)
-fit=lm(SizeIndoor~PopTotal+Avhousehold+Fertility+Birth)
-summary(fit)
-fit=lm(SizeIndoor~PopTotal+Avhousehold+Fertility+Death)
-summary(fit)
-fit=lm(SizeIndoor~PopTotal+Fertility+Birth+Death)
-summary(fit)
-fit=lm(SizeIndoor~Avhousehold+Fertility+Birth+Death)
-summary(fit)
-fit=lm(SizeIndoor~PopTotal+Avhousehold+Fertility)
-summary(fit)
-fit=lm(SizeIndoor~PopTotal+Avhousehold+Birth)
-summary(fit)
-fit=lm(SizeIndoor~PopTotal+Avhousehold+Death)
-summary(fit)
-fit=lm(SizeIndoor~Avhousehold+Fertility+Birth)
-summary(fit)
-fit=lm(SizeIndoor~Avhousehold+Fertility+Death)
-summary(fit)
-fit=lm(SizeIndoor~Avhousehold+Birth+Death)
-summary(fit)
-fit=lm(SizeIndoor~Fertility+Birth+Death)
-summary(fit)
-fit=lm(SizeIndoor~PopTotal+Fertility+Birth)
-summary(fit)
-fit=lm(SizeIndoor~PopTotal+Fertility+Death)
-summary(fit)
-fit=lm(SizeIndoor~PopTotal+Birth+Death)
-summary(fit)
-fit=lm(SizeIndoor~PopTotal+Avhousehold)
-summary(fit)
-fit=lm(SizeIndoor~PopTotal+Fertility)
-summary(fit)
-fit=lm(SizeIndoor~Avhousehold+Fertility)
-summary(fit)
-fit=lm(SizeIndoor~PopTotal+Birth)
-summary(fit)
-fit=lm(SizeIndoor~PopTotal+Death)
-summary(fit)
-fit=lm(SizeIndoor~Avhousehold+Birth)
-summary(fit)
-fit=lm(SizeIndoor~Avhousehold+Death)
-summary(fit)
-fit=lm(SizeIndoor~Fertility+Birth)
-summary(fit)
-fit=lm(SizeIndoor~Fertility+Death)
-summary(fit)
-fit=lm(SizeIndoor~Birth+Death)
-summary(fit)
-fit=lm(SizeIndoor~PopTotal)
-summary(fit)
-fit=lm(SizeIndoor~Avhousehold)
-summary(fit)
-fit=lm(SizeIndoor~Fertility)
-summary(fit)
-fit=lm(SizeIndoor~Birth)
-summary(fit)
-fit=lm(SizeIndoor~Death)
-summary(fit)
 
 #Question 4
-fit.test=lm(SizeTotal~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
+fit.test=lm(SizeTotal~PopTotal+Avhousehold+Fertility+Birth+Death, data = R_Population)
 m2 <- ols_best_subset(fit.test)
 m2
 
-
-#fit.4=lm(SizeTotal~PopTotal)
-#summary(fit.4)
-
-fit=lm(SizeTotal~PopTotal+Avhousehold+Fertility+Birth+Death)
-summary(fit)
-fit=lm(SizeTotal~PopTotal+Avhousehold+Birth+Death)
-summary(fit)
-fit=lm(SizeTotal~PopTotal+Avhousehold+Fertility+Birth)
-summary(fit)
-fit=lm(SizeTotal~PopTotal+Avhousehold+Fertility+Death)
-summary(fit)
-fit=lm(SizeTotal~PopTotal+Fertility+Birth+Death)
-summary(fit)
-fit=lm(SizeTotal~Avhousehold+Fertility+Birth+Death)
-summary(fit)
-fit=lm(SizeTotal~PopTotal+Avhousehold+Fertility)
-summary(fit)
-fit=lm(SizeTotal~PopTotal+Avhousehold+Birth)
-summary(fit)
-fit=lm(SizeTotal~PopTotal+Avhousehold+Death)
-summary(fit)
-fit=lm(SizeTotal~Avhousehold+Fertility+Birth)
-summary(fit)
-fit=lm(SizeTotal~Avhousehold+Fertility+Death)
-summary(fit)
-fit=lm(SizeTotal~Avhousehold+Birth+Death)
-summary(fit)
-fit=lm(SizeTotal~Fertility+Birth+Death)
-summary(fit)
-fit=lm(SizeTotal~PopTotal+Fertility+Birth)
-summary(fit)
-fit=lm(SizeTotal~PopTotal+Fertility+Death)
-summary(fit)
-fit=lm(SizeTotal~PopTotal+Birth+Death)
-summary(fit)
-fit=lm(SizeTotal~PopTotal+Avhousehold)
-summary(fit)
-fit=lm(SizeTotal~PopTotal+Fertility)
-summary(fit)
-fit=lm(SizeTotal~Avhousehold+Fertility)
-summary(fit)
-fit=lm(SizeTotal~PopTotal+Birth)
-summary(fit)
-fit=lm(SizeTotal~PopTotal+Death)
-summary(fit)
-fit=lm(SizeTotal~Avhousehold+Birth)
-summary(fit)
-fit=lm(SizeTotal~Avhousehold+Death)
-summary(fit)
-fit=lm(SizeTotal~Fertility+Birth)
-summary(fit)
-fit=lm(SizeTotal~Fertility+Death)
-summary(fit)
-fit=lm(SizeTotal~Birth+Death)
-summary(fit)
-fit=lm(SizeTotal~PopTotal)
-summary(fit)
-fit=lm(SizeTotal~Avhousehold)
-summary(fit)
-fit=lm(SizeTotal~Fertility)
-summary(fit)
-fit=lm(SizeTotal~Birth)
-summary(fit)
-fit=lm(SizeTotal~Death)
-summary(fit)
+fit.4=lm(SizeTotal~Fertility+Birth)
+summary(fit.4)
 
 #Question 5
-fit.test=lm(HousesTotal~PopTotal+Avhousehold+Fertility+Birth+Death, data = data1)
+fit.test=lm(HousesTotal~PopTotal+Avhousehold+Fertility+Birth+Death, data = R_Population)
 m2 <- ols_best_subset(fit.test)
 m2
 fit.5=lm(HousesTotal~PopTotal+Fertility+Birth)
 summary(fit.5)
-
-fit=lm(HousesTotal~PopTotal+Avhousehold+Fertility+Birth+Death)
-summary(fit)
-fit=lm(HousesTotal~PopTotal+Avhousehold+Birth+Death)
-summary(fit)
-fit=lm(HousesTotal~PopTotal+Avhousehold+Fertility+Birth)
-summary(fit)
-fit=lm(HousesTotal~PopTotal+Avhousehold+Fertility+Death)
-summary(fit)
-fit=lm(HousesTotal~PopTotal+Fertility+Birth+Death)
-summary(fit)
-fit=lm(HousesTotal~Avhousehold+Fertility+Birth+Death)
-summary(fit)
-fit=lm(HousesTotal~PopTotal+Avhousehold+Fertility)
-summary(fit)
-fit=lm(HousesTotal~PopTotal+Avhousehold+Birth)
-summary(fit)
-fit=lm(HousesTotal~PopTotal+Avhousehold+Death)
-summary(fit)
-fit=lm(HousesTotal~Avhousehold+Fertility+Birth)
-summary(fit)
-fit=lm(HousesTotal~Avhousehold+Fertility+Death)
-summary(fit)
-fit=lm(HousesTotal~Avhousehold+Birth+Death)
-summary(fit)
-fit=lm(HousesTotal~Fertility+Birth+Death)
-summary(fit)
-fit=lm(HousesTotal~PopTotal+Fertility+Birth)
-summary(fit)
-fit=lm(HousesTotal~PopTotal+Fertility+Death)
-summary(fit)
-fit=lm(HousesTotal~PopTotal+Birth+Death)
-summary(fit)
-fit=lm(HousesTotal~PopTotal+Avhousehold)
-summary(fit)
-fit=lm(HousesTotal~PopTotal+Fertility)
-summary(fit)
-fit=lm(HousesTotal~Avhousehold+Fertility)
-summary(fit)
-fit=lm(HousesTotal~PopTotal+Birth)
-summary(fit)
-fit=lm(HousesTotal~PopTotal+Death)
-summary(fit)
-fit=lm(HousesTotal~Avhousehold+Birth)
-summary(fit)
-fit=lm(HousesTotal~Avhousehold+Death)
-summary(fit)
-fit=lm(HousesTotal~Fertility+Birth)
-summary(fit)
-fit=lm(HousesTotal~Fertility+Death)
-summary(fit)
-fit=lm(HousesTotal~Birth+Death)
-summary(fit)
-fit=lm(HousesTotal~PopTotal)
-summary(fit)
-fit=lm(HousesTotal~Avhousehold)
-summary(fit)
-fit=lm(HousesTotal~Fertility)
-summary(fit)
-fit=lm(HousesTotal~Birth)
-summary(fit)
-fit=lm(HousesTotal~Death)
-summary(fit)
-
-
