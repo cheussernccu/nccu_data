@@ -33,7 +33,7 @@ x11(width=10,height=7)
 par(mar=c(3,4,2,2))
 par(mfrow=c(2,2))
 
-#House Type
+#House type
 housetype=cbind(R_Population[,7],1-R_Population[,7])
 barplot(t(housetype),names.arg  = c(1960:2015),main ="Rate of House Type in New Hampshire", xlab="Year",ylab="Rate",ylim = c(0,1),legend.text =  c("Condo","Single"),col = c("lightblue","lightpink"),args.legend = list(x = "topright",cex=1,bg="white"))
 
@@ -56,7 +56,7 @@ plot(R_Population[,1],R_Population[,13],type="l",xlab="Year",ylab="Houses",main=
 #Descriptive statistics 
 overview_house=matrix(NA,ncol =7,nrow = 4 )
 colnames(overview_house)=c("Rate of Condo","Bedrooms","Bathrooms","Total rooms","Indoor size(square feets)","Total size(Acres)","Total Houses")
-rownames(overview_house)=c("mean","maximun","minimun","standard_deviation")
+rownames(overview_house)=c("mean","maximum","minimum","standard_deviation")
 for(i in 1:7){
   overview_house[1,i]=mean(R_Population[,i+6],na.rm = TRUE)
 }
@@ -69,6 +69,7 @@ for(i in 1:7){
 for(i in 1:7){
   overview_house[4,i]=sd(R_Population[,i+6],na.rm = TRUE)
 }
+overview_house
 
 
 #Demographic data
@@ -95,7 +96,7 @@ plot(R_Population[,1],R_Population[,6],type="l",xlab="Year",ylab="Death Rate",ma
 #Descriptive statistics 
 overview_Pop=matrix(NA,ncol =5,nrow = 4 )
 colnames(overview_Pop)=c("Population","Average Households","Fertility Rate","Birth Rate","Death Rate")
-rownames(overview_Pop)=c("mean","maximun","minimun","standard_deviation")
+rownames(overview_Pop)=c("mean","maximum","minimum","standard_deviation")
 for(i in 1:5){
   overview_Pop[1,i]=mean(R_Population[,i+1],na.rm = TRUE)
 }
@@ -108,6 +109,7 @@ for(i in 1:5){
 for(i in 1:5){
   overview_Pop[4,i]=sd(R_Population[,i+1],na.rm = TRUE)
 }
+overview_Pop
 
 
 #Regression
@@ -120,8 +122,7 @@ m2
 fit.1=lm(SingleCondo~PopTotal+Fertility+Death) 
 summary(fit.1)
 
-#library(DAAG)
-#cv.lm(data = R_Population, fit.1, m=5)
+#Or
 
 fit=lm(SingleCondo~PopTotal+Avhousehold+Fertility+Birth+Death)
 summary(fit)
