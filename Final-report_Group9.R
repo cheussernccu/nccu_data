@@ -9,7 +9,7 @@ library(olsrr)
 realEstate <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/Real%20Estate_Group9.csv"), header=TRUE, sep = ",", stringsAsFactors = FALSE)
 realEstate.dataframe = data.frame(realEstate)
 
-#Adjusting the Data (categorial to numerical)
+#Adjusting the data (categorial to numerical)
 realEstate[which(realEstate$Property.Type == "Condo"),5] = 1
 realEstate[which(realEstate$Property.Type == "Single Family"),5] = 0
 
@@ -186,6 +186,7 @@ summary(fit)
 fit=lm(SingleCondo~Death)
 summary(fit)
 
+
 #Question 2
 fit.test=lm(TotalRooms~PopTotal+Avhousehold+Fertility+Birth+Death, data = R_Population)
 m2 <- ols_best_subset(fit.test)
@@ -221,6 +222,7 @@ m2
 
 fit.4=lm(SizeTotal~Fertility+Birth)
 summary(fit.4)
+
 
 #Question 5
 fit.test=lm(HousesTotal~PopTotal+Avhousehold+Fertility+Birth+Death, data = R_Population)
