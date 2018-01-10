@@ -4,6 +4,7 @@
 #Packages
 library(RCurl)
 library(olsrr)
+library(DAAG)
 
 #Data set
 realEstate <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/Real%20Estate_Group9.csv"), header=TRUE, sep = ",", stringsAsFactors = FALSE)
@@ -206,6 +207,7 @@ m2 <- ols_best_subset(fit.test)
 m2
 fit.2c=lm(Bathrooms~PopTotal+Fertility+Death, data = R_Population)
 summary(fit.2c)
+cv.lm(data = R_Population, fit.2c, m=5)
 
 
 #Question 3
