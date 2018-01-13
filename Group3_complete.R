@@ -20,6 +20,8 @@ train_lessColumns <- read.csv("train_clean.csv", header=TRUE, sep = ";")
 
 train_qual_price <- read.csv("train_qual_price.csv", header=TRUE, sep = ";")
 
+train_dummy_3 <- read.csv("train_dummy_3.csv", header=TRUE, sep = ",")
+
 #BasicSummary Data about the all realEstate sold in one year
 Years=2006:2010
 for(i in Years){
@@ -28,7 +30,7 @@ for(i in Years){
 #Summary Data about the whole Dataset
 summary(realEstate)
 
-
+#Q1
 
 #bestSubset variable selection - probably takes several hours to run
 #includes all variables that shown a less or euqal 5% significant in a lm with all variables
@@ -37,6 +39,8 @@ bestSubsets <- ols_best_subset(fit.bestSub) #can take several hours to run
 bestSubsets
 
 #result bets subset: OverallQual stFlrSF ndFlrSF KitchenQual Neighborhood
+
+#Q2
 
 fit.best = lm(log(SalePrice) ~ 0+OverallQual + stFlrSF + ndFlrSF +  KitchenQual +Neighborhood,data=train_withDummy)
 summary(fit.best)
@@ -145,3 +149,121 @@ cv.lm(data=realEstate.dataframe, fit.gg2, m=5)
 plot(train_qual_price)
 abline(fit.gg)  
 abline(fit.gg2)
+
+#Q3
+
+#regression by year
+ylm=lm(SalePrice~as.factor(YrSold),data=realEstate)
+summary(ylm)
+
+#regression by cummulative month
+cmsold=c()
+for(s in 1:1460){
+  sms=((realEstate$YrSold[s]-2006)*12+realEstate$MoSold[s])
+  cmsold=c(cmsold,sms)
+}
+
+mlm=lm(realEstate$SalePrice~cmsold)
+summary(mlm)
+
+
+#HousePriceIndex from the US for 2006-2010
+HPI <-read.csv(text=getURL("https://raw.githubusercontent.com/cheussernccu/nccu_data/master/HousePriceIndex.csv"), header=TRUE, sep = ",", stringsAsFactors = FALSE)
+HPI = head(HPI,-5)
+
+#Changing the values so that January 2006 equals 100 (Indexing to base January 2006)
+HPI_ind=HPI$USA.House.Price.Index/HPI[1,4]*100
+
+#Procedurs for indexing our values later
+arrayjan06=realEstate$SalePrice[which(realEstate$MoSold==1&realEstate$YrSold==2006)]
+avgjan06=mean(arrayjan06)
+
+#for loop which gives us the average prices in our dataset for every month
+avgprices=c()
+my=c()
+
+for (year in (2006:2010)){
+  for (month in(1:12)){
+    my=c(my,paste(year,"/",month))
+    pricesmonth=realEstate$SalePrice[which(realEstate$MoSold==month&realEstate$YrSold==year)]
+    meanprice=mean(pricesmonth)
+    avgprices=c(avgprices,meanprice)
+  }
+}
+
+avgprices=head(avgprices,-5)
+
+#Indexing our dataset to January2006
+IndexIowa=avgprices/avgjan06*100
+
+#Smoothing values by taking 3 month average
+IndexIowaS=mean(c(IndexIowa[1],IndexIowa[2]))
+for (w in 2:(length(IndexIowa)-1)){
+  tmp=mean(c(IndexIowa[w-1],IndexIowa[w],IndexIowa[w+1]))
+  IndexIowaS=c(IndexIowaS,tmp)
+}
+IndexIowaS=c(IndexIowaS,mean(c(IndexIowa[(length(IndexIowa)-1)],IndexIowa[(length(IndexIowa))])))
+
+my
+Time=(1:55)
+cumo=cbind(my,Time)
+
+#Plotting the values
+x11()
+plot(Time,IndexIowa,type="l",col="red",ylim=c(0,120),xlim=c(1,55),ylab="Index",xlab="Cumulated month (Starting from January 2006)",xaxt="n")
+axis(1,at=seq(0,60,6))
+legend(1,40,legend=c("American house price index", "Iowa house prices (our dataset)","Iowa house prices (smoothed)"),col=c("blue","red","darkseagreen"),lty=1)
+lines(Time,HPI_ind,type="l",col="blue")
+lines(Time,IndexIowaS,type="l",col="darkseagreen")
+lines(c(-10,100),c(100,100),lty=2)
+
+
+#Correlation
+#x-Axis is cummulative month (January 2006 -> 1, see "cumo")
+cor.test(Time,HPI_ind)
+cor.test(Time,IndexIowa)
+cor.test(Time,IndexIowaS)
+cor.test(HPI_ind,IndexIowa)
+cor.test(HPI_ind,IndexIowaS)
+pairs(cbind(HPI_ind,IndexIowa,IndexIowaS,Time))
+
+
+#Iowa Prices also dropped due to the Real Estate Crisis. Our dataset is not big enough for a
+#representative analysis. For example the average price per month is not exactly accurate. There
+#are many factors which distort our results. Firstly, there could be exceptions from the usual 
+#price in the Iowa market which have quite a big impact on the average price in a given month. Also
+#it is possible that in a month only expensive (cheap) houses were sold which distort the average
+#in a month. So our plotted graph is not really an index.
+#huge variance
+
+#Q4
+
+attach(train_dummy_3)
+plot(IfRemod,SalePrice)
+
+
+fit.remod = lm(log(SalePrice) ~ 0 + IfRemod,data=train_dummy_3)
+summary(fit.remod)
+cv.lm(data=train_dummy_3, fit.remod, m=5)
+#fit fit.remod: R^2:0.474 MS:79.3
+
+fit.ovaq = lm(log(SalePrice) ~ 0 + OverallQual,data=train_dummy_3)
+summary(fit.ovaq)
+cv.lm(data=train_dummy_3, fit.ovaq, m=5)
+#fit fit.ovaq: R^2:0.962 MS:5.69
+
+fit.ovaqremod = lm(log(SalePrice) ~ 0 + OverallQual + IfRemod,data=train_dummy_3)
+summary(fit.ovaqremod)
+cv.lm(data=train_dummy_3, fit.ovaqremod, m=5)
+#fit fit.ovaqremod: R^2:0.965 MS:5.26
+
+fit.best = lm(log(SalePrice) ~ 0+OverallQual + stFlrSF + ndFlrSF +  KitchenQual +Neighborhood,data=train_withDummy)
+summary(fit.best)
+cv.lm(data=train_withDummy, fit.best, m=5)
+#fit fit.best: R^2: 1 MS: 0.03
+
+fit.bestremod = lm(log(SalePrice) ~ 0+OverallQual + stFlrSF + ndFlrSF +  KitchenQual +Neighborhood + IfRemod,data=train_dummy_3)
+summary(fit.bestremod)
+cv.lm(data=train_dummy_3, fit.bestremod, m=5)
+#fit fit.best: R^2: 1 MS: 0.03
+
